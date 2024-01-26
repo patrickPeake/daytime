@@ -7,7 +7,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <unistd.h>
-#include "msg.h"
+#include "msg.c"
+#include <time.h>
 
 #define MAXLINE     4096    /* max text line length */
 #define DAYTIME_PORT 3333
@@ -37,13 +38,23 @@ main(int argc, char **argv)
         exit(1);
     }
 
-    
-
+    time_t ticks;
+    struct message out = init();
+    snprintf(out.addr, MAXLINE, "%s", argv[1]);
+    out.addrlen = strlen(out.addr);
+    ticks = time(NULL);
+    snprintf(out.currtime, MAXLINE, "%.24s\r\n", ctime(&ticks));
+    out.timelen = strlen(out.currtime);
+    snprintf(out.payload, MAXLINE, "%s", "Test Output");
+    out.msglen = strlen(out.payload);
+    printMsg(out);
 
     if (connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0) {
         printf("connect error\n");
         exit(1);
     }
+
+
 
     // Send "message sent" to the server
     const char *message = "message sent";
