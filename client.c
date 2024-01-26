@@ -34,7 +34,7 @@ main(int argc, char **argv)
     }
     
 ////////////////////////////////////////////////////////
-
+/*
     // zero out initial hints addrinfo, set predefined values
     struct addrinfo init, *info; // init is our hints, *info is our result
     memset(&init, 0, sizeof(init));
@@ -64,7 +64,7 @@ main(int argc, char **argv)
 
     freeaddrinfo(info);     // free malloc'd addrinfo
 
-
+*/
     /*
     //printf("HOSTNAME TEST");
     struct addrinfo hints, *res, *p;
@@ -101,8 +101,8 @@ main(int argc, char **argv)
 
     freeaddrinfo(res);  // free the linked list
 
-    //return 0;
-/*
+    //return 0;*/
+
 
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET; 
@@ -131,7 +131,7 @@ main(int argc, char **argv)
     //structToString(out, message, MAXLINE*4+1);
     //printf("sending: %s\n", message);
 
-
+ 
 
     if (connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0) {
         printf("connect error\n");

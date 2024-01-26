@@ -1,5 +1,10 @@
+#ifndef MSG_C
+#define MSG_C
 #include "msg.h"
-#include "stdio.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #define MAXLINE    4096
 
 struct message* init() {
@@ -28,3 +33,5 @@ void structToString(struct message *msg, char *result, int size) {
     //printf("snprintf return: %d", snprintf(result, size, "%d,%d,%d,%s,%s,%s\n",msg->addrlen, msg->timelen, msg->msglen,msg->addr, msg->currtime, msg->payload));
     printf("\n\n\n\n\n");
 }
+
+#endif
