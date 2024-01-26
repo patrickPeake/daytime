@@ -6,13 +6,13 @@ CFLAGS=-c -Wall
 
 all: server client pipe
 
-server: server.o
+server: server.o msg.0
 	$(CC) server.o msg.o -o server
 
-client: client.o
+client: client.o msg.o
 	$(CC) client.o msg.o -o client
 
-pipe: pipe.o
+pipe: pipe.o msg.o
 	$(CC) pipe.o msg.o -o pipe
 
 server.o: server.c
