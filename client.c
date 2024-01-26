@@ -60,7 +60,7 @@ main(int argc, char **argv)
     const char *message = "message sent";
     if (write(sockfd, message, strlen(message)) < 0) {
         printf("write error\n");
-        exit(1);
+        exit(1); 
     }*/
 
 
