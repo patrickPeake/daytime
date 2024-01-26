@@ -36,7 +36,7 @@ main(int argc, char **argv)
 
     for ( ; ; ) {
         connfd = accept(listenfd, (struct sockaddr *) NULL, NULL);
-
+        /*
         char buffin[MAXLINE*4+1];
         int ret = read(connfd, buffin, 4*MAXLINE);
         if (ret > 0) {
@@ -44,7 +44,7 @@ main(int argc, char **argv)
             printf("\n\n");
             printf("Received message from client: %s\n", buffin);
         }
-
+*/
 
         ticks = time(NULL);
         snprintf(buff, sizeof(buff), "%.24s\r\n", ctime(&ticks));

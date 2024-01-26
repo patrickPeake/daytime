@@ -16,7 +16,7 @@
 int
 main(int argc, char **argv)
 {
-
+    setbuf(stdout, NULL);//no buffering for stdout
     int     sockfd, n;
     char    recvline[MAXLINE + 1];
     struct sockaddr_in servaddr;
@@ -41,21 +41,22 @@ main(int argc, char **argv)
 
     time_t ticks; //construct struct
     struct message* out = init();
-    printf("snprintf return: %d",snprintf(out->addr, MAXLINE-1, "%s", argv[1]));
+    snprintf(out->addr, MAXLINE-1, "%s", argv[1]);
     out->addrlen = strlen(out->addr);
     ticks = time(NULL); 
     snprintf(out->currtime, MAXLINE-1, "%.24s\r", ctime(&ticks));
     out->timelen = strlen(out->currtime);
     snprintf(out->payload, MAXLINE-1, "%s", "Test Output\n");
     out->msglen = strlen(out->payload);
-    printMsg(out); //print struct for debug
+    //printMsg(out); //print struct for debug
     
     // format message to be sent to server
-    char message[MAXLINE*4+1];
+    //char message[MAXLINE*4+1];
     //printf("%d\n\n\n", out->addrlen);
-    printf("%d,%d,%d,%s,%s,%s\n",out->addrlen, out->timelen, out->msglen,out->addr, out->currtime, out->payload);
+    //printf("shits unimaginably broke");
+    //printf("%d,%d,%d,%s,%s,%s\n",out->addrlen, out->timelen, out->msglen,out->addr, out->currtime, out->payload);
     //structToString(out, message, MAXLINE*4+1);
-    printf("sending: %s\n", message);
+    //printf("sending: %s\n", message);
 
 
 
@@ -66,13 +67,13 @@ main(int argc, char **argv)
 
 
 
-   
+   /*
 
     if (write(sockfd, message, strlen(message)) < 0) {
         printf("write error\n");
         exit(1); 
     }
-    
+*/
 
 
     while ( (n = read(sockfd, recvline, MAXLINE)) > 0) {
