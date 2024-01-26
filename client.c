@@ -16,11 +16,12 @@
 int
 main(int argc, char **argv)
 {
+
     int     sockfd, n;
     char    recvline[MAXLINE + 1];
     struct sockaddr_in servaddr;
 
-    if (argc != 3) {
+    if (argc != 3) { //check right number of args
         printf("usage: client <IPaddress>, <port>\n");
         exit(1);
     }
@@ -31,23 +32,32 @@ main(int argc, char **argv)
     }
     
     bzero(&servaddr, sizeof(servaddr));
-    servaddr.sin_family = AF_INET;
+    servaddr.sin_family = AF_INET; 
     servaddr.sin_port = htons(atoi(argv[2]));  /* daytime server */
     if (inet_pton(AF_INET, argv[1], &servaddr.sin_addr) <= 0) {
         printf("inet_pton error for %s\n", argv[1]);
         exit(1);
     }
 
-    time_t ticks;
-    struct message out = init();
-    snprintf(out.addr, MAXLINE, "%s", argv[1]);
-    out.addrlen = strlen(out.addr);
-    ticks = time(NULL);
-    snprintf(out.currtime, MAXLINE, "%.24s\r\n", ctime(&ticks));
-    out.timelen = strlen(out.currtime);
-    snprintf(out.payload, MAXLINE, "%s", "Test Output");
-    out.msglen = strlen(out.payload);
-    printMsg(out);
+    time_t ticks; //construct struct
+    struct message* out = init();
+    printf("snprintf return: %d",snprintf(out->addr, MAXLINE-1, "%s", argv[1]));
+    out->addrlen = strlen(out->addr);
+    ticks = time(NULL); 
+    snprintf(out->currtime, MAXLINE-1, "%.24s\r", ctime(&ticks));
+    out->timelen = strlen(out->currtime);
+    snprintf(out->payload, MAXLINE-1, "%s", "Test Output\n");
+    out->msglen = strlen(out->payload);
+    printMsg(out); //print struct for debug
+    
+    // format message to be sent to server
+    char message[MAXLINE*4+1];
+    //printf("%d\n\n\n", out->addrlen);
+    printf("%d,%d,%d,%s,%s,%s\n",out->addrlen, out->timelen, out->msglen,out->addr, out->currtime, out->payload);
+    //structToString(out, message, MAXLINE*4+1);
+    printf("sending: %s\n", message);
+
+
 
     if (connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0) {
         printf("connect error\n");
@@ -56,12 +66,13 @@ main(int argc, char **argv)
 
 
 
-    // Send "message sent" to the server
-    const char *message = "message sent";
+   
+
     if (write(sockfd, message, strlen(message)) < 0) {
         printf("write error\n");
         exit(1); 
     }
+    
 
 
     while ( (n = read(sockfd, recvline, MAXLINE)) > 0) {
@@ -75,7 +86,7 @@ main(int argc, char **argv)
         printf("read error\n");
         exit(1);
     }
-
+    free(out);
     exit(0);
 }
 
