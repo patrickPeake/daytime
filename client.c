@@ -55,13 +55,13 @@ main(int argc, char **argv)
     }
 
 
-
+/*
     // Send "message sent" to the server
     const char *message = "message sent";
     if (write(sockfd, message, strlen(message)) < 0) {
         printf("write error\n");
         exit(1);
-    }
+    }*/
 
 
     while ( (n = read(sockfd, recvline, MAXLINE)) > 0) {
