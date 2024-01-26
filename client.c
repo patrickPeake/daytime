@@ -9,6 +9,7 @@
 #include <unistd.h>
 #include "msg.c"
 #include <time.h>
+#include <netdb.h>
 
 #define MAXLINE     4096    /* max text line length */
 #define DAYTIME_PORT 3333
@@ -26,11 +27,52 @@ main(int argc, char **argv)
         exit(1);
     }
 
+
     if ( (sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         printf("socket error\n");
         exit(1);
     }
     
+////////////////////////////////////////////////////////
+    
+    //printf("HOSTNAME TEST");
+    struct addrinfo hints, *res, *p;
+    int status;
+
+    memset(&hints, 0, sizeof hints);
+    hints.ai_family = AF_INET;
+    hints.ai_socktype = SOCK_STREAM;
+
+    if ((status = getaddrinfo(argv[1], NULL, &hints, &res)) != 0) {
+        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(status));
+        return 1;
+    }
+
+    for (p = res; p != NULL; p = p->ai_next) {
+        void *addr;
+        char ipstr[MAXLINE];
+
+        struct sockaddr_in *ipv4 = (struct sockaddr_in *)p->ai_addr;
+        addr = &(ipv4->sin_addr);
+
+        // Convert the IP to a string
+        inet_ntop(p->ai_family, addr, ipstr, sizeof ipstr);
+        printf("IP address: %s\n", ipstr);
+
+        // Get host information
+        char host[NI_MAXHOST];
+        if ((status = getnameinfo(p->ai_addr, p->ai_addrlen, host, sizeof host, NULL, 0, NI_NAMEREQD)) != 0) {
+            fprintf(stderr, "getnameinfo: %s\n", gai_strerror(status));
+            continue;
+        }
+        printf("Host name: %s\n", host);
+    }
+
+    freeaddrinfo(res);  // free the linked list
+
+    //return 0;
+
+
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET; 
     servaddr.sin_port = htons(atoi(argv[2]));  /* daytime server */
@@ -44,7 +86,7 @@ main(int argc, char **argv)
     snprintf(out->addr, MAXLINE-1, "%s", argv[1]);
     out->addrlen = strlen(out->addr);
     ticks = time(NULL); 
-    snprintf(out->currtime, MAXLINE-1, "%.24s\r", ctime(&ticks));
+    snprintf(out->currtime, MAXLINE-1, "%.24s", ctime(&ticks));
     out->timelen = strlen(out->currtime);
     snprintf(out->payload, MAXLINE-1, "%s", "Test Output\n");
     out->msglen = strlen(out->payload);
@@ -54,7 +96,7 @@ main(int argc, char **argv)
     //char message[MAXLINE*4+1];
     //printf("%d\n\n\n", out->addrlen);
     //printf("shits unimaginably broke");
-    //printf("%d,%d,%d,%s,%s,%s\n",out->addrlen, out->timelen, out->msglen,out->addr, out->currtime, out->payload);
+    printf("%d,%d,%d,%s,%s,%s\n",out->addrlen, out->timelen, out->msglen,out->addr, out->currtime, out->payload);
     //structToString(out, message, MAXLINE*4+1);
     //printf("sending: %s\n", message);
 
