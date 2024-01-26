@@ -1,4 +1,5 @@
 #include "msg.h"
+#include "stdio.h"
 #define MAXLINE    4096
 
 struct message* init() {
