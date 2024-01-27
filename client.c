@@ -127,9 +127,11 @@ main(int argc, char **argv)
     //char message[MAXLINE*4+1];
     //printf("%d\n\n\n", out->addrlen);
     //printf("shits unimaginably broke");
-    printf("%d,%d,%d,%s,%s,%s\n",out->addrlen, out->timelen, out->msglen,out->addr, out->currtime, out->payload);
-    //structToString(out, message, MAXLINE*4+1);
-    //printf("sending: %s\n", message);
+    //printf("%d,%d,%d,%s,%s,%s\n",out->addrlen, out->timelen, out->msglen,out->addr, out->currtime, out->payload);
+    
+    
+    structToString(out, message, MAXLINE*4+1);
+    printf("sending: %s\n", message);
 
  
 
