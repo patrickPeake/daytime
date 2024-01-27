@@ -129,7 +129,7 @@ main(int argc, char **argv)
     //printf("shits unimaginably broke");
     //printf("%d,%d,%d,%s,%s,%s\n",out->addrlen, out->timelen, out->msglen,out->addr, out->currtime, out->payload);
     
-    
+    char *message = malloc(MAXLINE*4);
     structToString(out, message, MAXLINE*4+1);
     printf("sending: %s\n", message);
 

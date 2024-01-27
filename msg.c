@@ -29,9 +29,9 @@ void printMsg(struct message* msg) {
 }
 
 void structToString(struct message *msg, char *result, int size) {
-    printf("%d,%d,%d,%s,%s,%s\n",msg->addrlen, msg->timelen, msg->msglen,msg->addr, msg->currtime, msg->payload);
-    //printf("snprintf return: %d", snprintf(result, size, "%d,%d,%d,%s,%s,%s\n",msg->addrlen, msg->timelen, msg->msglen,msg->addr, msg->currtime, msg->payload));
-    printf("\n\n\n\n\n");
+    //printf("%d,%d,%d,%s,%s,%s\n",msg->addrlen, msg->timelen, msg->msglen,msg->addr, msg->currtime, msg->payload);
+    snprintf(result, size, "%d,%d,%d,%s,%s,%s\n",msg->addrlen, msg->timelen, msg->msglen,msg->addr, msg->currtime, msg->payload);
+    //printf("\n\n\n\n\n");
 }
 
 #endif
