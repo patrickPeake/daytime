@@ -22,6 +22,7 @@ main(int argc, char **argv)
     struct sockaddr_in servaddr;
     char    buff[MAXLINE];
     time_t ticks;
+    struct message* out;
 
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -42,7 +43,10 @@ main(int argc, char **argv)
         if (ret > 0) {
             buffin[ret] = '\0';  // Null-terminate the received data
             printf("\n\n");
-            printf("Received message from client: %s\n", buffin);
+            //printf("Received message from client: %s\n", buffin);
+            out = stringToStruct(buffin);
+            printMsg(out);
+
         }
 
 

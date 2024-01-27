@@ -17,5 +17,7 @@ void printMsg(struct message* msg);
 
 void structToString(struct message *msg, char *result, int size);
 
+struct message* stringToStruct(char *in);
+
 
 #endif
