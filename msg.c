@@ -1,5 +1,5 @@
-#ifndef MSG_C
-#define MSG_C
+#ifndef MSG_C //this file should really be called something else because its not just the message methods anymore but i 
+#define MSG_C //cant be bothered to go through everything and change it so I am not going to
 #include "msg.h"
 #include <stdio.h>
 #include <stdlib.h>
@@ -84,5 +84,28 @@ void getServerInfo(char* input, char* ipOut, char* nameOut) { //takes in the ip 
     freeaddrinfo(result);
 }
 
+void runWho(char* toOut) {
+    FILE *fp;
+    char buffer[1024];
+
+    // Open a pipe to the command
+    fp = popen("who", "r");
+    if (fp == NULL) {
+        perror("popen");
+        exit(1);
+    }
+
+    // Read the output of the command
+    while (fgets(buffer, sizeof(buffer), fp) != NULL) {
+        strcpy(toOut , buffer);
+        //printf("%s", buffer);
+    }
+
+    // Close the pipe
+    if (pclose(fp) == -1) {
+        perror("pclose");
+        exit(1);
+    }
+}
 
 #endif
