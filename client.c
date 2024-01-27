@@ -44,14 +44,14 @@ main(int argc, char **argv)
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET; 
     servaddr.sin_port = htons(atoi(argv[2]));  /* daytime server */
-    if (inet_pton(AF_INET, argv[1], &servaddr.sin_addr) <= 0) {
-        printf("inet_pton error for %s\n", argv[1]);
+    if (inet_pton(AF_INET, ip, &servaddr.sin_addr) <= 0) {
+        printf("inet_pton error for %s\n", ip);
         exit(1);
     }
 
     time_t ticks; //construct struct
     struct message* out = init();
-    snprintf(out->addr, MAXLINE-1, "%s", argv[1]);
+    snprintf(out->addr, MAXLINE-1, "%s", ip);
     out->addrlen = strlen(out->addr);
     ticks = time(NULL); 
     snprintf(out->currtime, MAXLINE-1, "%.24s", ctime(&ticks));

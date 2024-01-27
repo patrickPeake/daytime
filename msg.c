@@ -40,7 +40,7 @@ struct message* stringToStruct(char *in){
     return msg;
 }
 
-void getServerInfo(char* input, char* ipOut, char* nameOut) {
+void getServerInfo(char* input, char* ipOut, char* nameOut) { //takes in the ip or hostname nad returns both
     struct addrinfo hints, *result, *rp;
     struct sockaddr_in *addr;
     char ip[MAXLINE];
@@ -62,12 +62,12 @@ void getServerInfo(char* input, char* ipOut, char* nameOut) {
         addr = (struct sockaddr_in *)rp->ai_addr;
 
         // Convert IP address to string
-        if (inet_ntop(AF_INET, &(addr->sin_addr), ip, INET_ADDRSTRLEN) == NULL) {
+        if (inet_ntop(AF_INET, &(addr->sin_addr), ip, MAXLINE) == NULL) {
             fprintf(stderr, "Error in inet_ntop\n");
             continue;
         }
 
-        if (getnameinfo(rp->ai_addr, rp->ai_addrlen, host, NI_MAXHOST, NULL, 0, 0) == 0) {
+        if (getnameinfo(rp->ai_addr, rp->ai_addrlen, host, MAXLINE, NULL, 0, 0) == 0) {
             printf("Server Name: %s\n", host);
         }
 
