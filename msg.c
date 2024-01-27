@@ -43,7 +43,8 @@ struct message* stringToStruct(char *in){
 void getServerInfo(char* input, char* ipOut, char* nameOut) {
     struct addrinfo hints, *result, *rp;
     struct sockaddr_in *addr;
-    char ip[INET_ADDRSTRLEN];
+    char ip[MAXLINE];
+    char host[MAXLINE];
 
     // Initialize hints
     memset(&hints, 0, sizeof(struct addrinfo));
@@ -66,9 +67,15 @@ void getServerInfo(char* input, char* ipOut, char* nameOut) {
             continue;
         }
 
+        if (getnameinfo(rp->ai_addr, rp->ai_addrlen, host, NI_MAXHOST, NULL, 0, 0) == 0) {
+            printf("Server Name: %s\n", host);
+        }
+
         // Print the result
+        strcpy(ipOut , ip);
+        strcpy(nameOut , host);
         printf("\n\n");
-        printf("Server Name: %s\n", input);
+        printf("Server Name: %s\n", host);
         printf("Server IP: %s\n", ip);
         printf("\n\n");
     }
