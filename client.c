@@ -66,43 +66,20 @@ main(int argc, char **argv)
 
 */
     /*
-    //printf("HOSTNAME TEST");
-    struct addrinfo hints, *res, *p;
-    int status;
 
-    memset(&hints, 0, sizeof hints);
-    hints.ai_family = AF_INET;
-    hints.ai_socktype = SOCK_STREAM;
 
-    if ((status = getaddrinfo(argv[1], NULL, &hints, &res)) != 0) {
-        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(status));
-        return 1;
-    }
 
-    for (p = res; p != NULL; p = p->ai_next) {
-        void *addr;
-        char ipstr[MAXLINE];
 
-        struct sockaddr_in *ipv4 = (struct sockaddr_in *)p->ai_addr;
-        addr = &(ipv4->sin_addr);
+    
 
-        // Convert the IP to a string
-        inet_ntop(p->ai_family, addr, ipstr, sizeof ipstr);
-        printf("IP address: %s\n", ipstr);
+    getServerInfo(argv[1]);
 
-        // Get host information
-        char host[NI_MAXHOST];
-        if ((status = getnameinfo(p->ai_addr, p->ai_addrlen, host, sizeof host, NULL, 0, NI_NAMEREQD)) != 0) {
-            fprintf(stderr, "getnameinfo: %s\n", gai_strerror(status));
-            continue;
-        }
-        printf("Host name: %s\n", host);
-    }
-
-    freeaddrinfo(res);  // free the linked list
+    return 0;
+}
 
     //return 0;*/
 
+    getServerInfo(argv[1]);
 
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET; 
@@ -124,14 +101,10 @@ main(int argc, char **argv)
     //printMsg(out); //print struct for debug
     
     // format message to be sent to server
-    //char message[MAXLINE*4+1];
-    //printf("%d\n\n\n", out->addrlen);
-    //printf("shits unimaginably broke");
-    //printf("%d,%d,%d,%s,%s,%s\n",out->addrlen, out->timelen, out->msglen,out->addr, out->currtime, out->payload);
     
     char *message = malloc(MAXLINE*4);
     structToString(out, message, MAXLINE*4+1); 
-    printf("sending: %s\n", message);
+    //printf("sending: %s\n", message);
 
  
 
