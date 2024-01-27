@@ -17,7 +17,9 @@
 int
 main(int argc, char **argv)
 {
-    setbuf(stdout, NULL);//no buffering for stdout
+    //setbuf(stdout, NULL);//no buffering for stdout
+    char argin[MAXLINE]; 
+    strcpy(argin , argv[1]);
     int     sockfd, n;
     char    recvline[MAXLINE + 1];
     struct sockaddr_in servaddr;
@@ -32,54 +34,12 @@ main(int argc, char **argv)
         printf("socket error\n");
         exit(1);
     }
-    
-////////////////////////////////////////////////////////
-/*
-    // zero out initial hints addrinfo, set predefined values
-    struct addrinfo init, *info; // init is our hints, *info is our result
-    memset(&init, 0, sizeof(init));
-    init.ai_family = AF_INET;
-    init.ai_socktype = SOCK_DGRAM;
-    init.ai_flags = AI_PASSIVE;
 
-    // initalize init, get info
-    int addrinfo_rv = getaddrinfo(NULL, args.local_port, &init, &info);     // initial run
-    while(addrinfo_rv != 0)                                                 // loop until success if initial run fails
-    {
-        addrinfo_rv = getaddrinfo(NULL, args.local_port, &init, &info);
-    }
-    int sock, bind_status;
-    do // initial run
-    {
-        if((sock = socket(info->ai_family, info->ai_socktype, info->ai_protocol)) == -1)    // attempts to create a socket with given addrinfo info
-            continue; // continue looping if socket creation fails
-        if((bind_status = bind(sock, info->ai_addr, info->ai_addrlen)) == -1)               // attempts to bind to the above socket
-            continue; // continue looping if it fails to binds
-        break;
-    }
-    while((info = info->ai_next) != NULL); // loop condition
-    
-    if(sock < 0 || bind_status < 0) // indicates failure on socket creation/bind
-        exit(EXIT_FAILURE);
-
-    freeaddrinfo(info);     // free malloc'd addrinfo
-
-*/
-    /*
+    char* ip = malloc(MAXLINE);
+    char* name = malloc(MAXLINE);
 
 
-
-
-    
-
-    getServerInfo(argv[1]);
-
-    return 0;
-}
-
-    //return 0;*/
-
-    getServerInfo(argv[1]);
+    getServerInfo(argin, ip, name);
 
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET; 

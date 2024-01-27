@@ -40,7 +40,7 @@ struct message* stringToStruct(char *in){
     return msg;
 }
 
-void getServerInfo(const char* input) {
+void getServerInfo(char* input, char* ipOut, char* nameOut) {
     struct addrinfo hints, *result, *rp;
     struct sockaddr_in *addr;
     char ip[INET_ADDRSTRLEN];

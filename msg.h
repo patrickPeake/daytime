@@ -19,6 +19,6 @@ void structToString(struct message *msg, char *result, int size);
 
 struct message* stringToStruct(char *in);
 
-void getServerInfo(const char* input);
+void getServerInfo(char* input, char* ip, char* name);
 
 #endif
