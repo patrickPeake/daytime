@@ -140,15 +140,10 @@ main(int argc, char **argv)
         exit(1);
     }
 
-
-
-   /*
-
     if (write(sockfd, message, strlen(message)) < 0) {
         printf("write error\n");
         exit(1); 
     }
-*/
 
 
     while ( (n = read(sockfd, recvline, MAXLINE)) > 0) {
