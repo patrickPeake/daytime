@@ -120,7 +120,7 @@ main(int argc, char **argv)
             //free(msg); //free stuff
             free(ip);
             free(name);
-            free(message);
+            //free(message);
 
 
 
@@ -131,9 +131,10 @@ main(int argc, char **argv)
 
 
 
-            structToString(msg, buffin, MAXLINE*4+1); //serialize the struct
+            structToString(msg, message, MAXLINE*4+1); //serialize the struct
 
-            write(connfd, buffin, strlen(buffin)); //send it out
+            write(connfd, message, strlen(message)); //send it out
+            free(message);
         } else { //souldnt ever really happen but will prevent client and server getting stuck if a bodyless message comes through
             ticks = time(NULL);
             snprintf(buff, sizeof(buff), "%.24s\r\n", ctime(&ticks));
@@ -142,7 +143,7 @@ main(int argc, char **argv)
         }
 
         free(msg); //free stuff
-        
+
         close(connfd);
     }
     free(inptStr);
