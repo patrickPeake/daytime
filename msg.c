@@ -87,8 +87,8 @@ void getServerInfo(char* input, char* ipOut, char* nameOut) { //takes in the ip 
 void runWho(char* toOut) {
     FILE *fp;
     char buffer[1024];
-    toOut = '\0';
-    //strcpy(toOut, "");
+    //toOut = '\0';
+    strcpy(toOut, "");
 
     // Open a pipe to the command
     fp = popen("who", "r");
