@@ -37,6 +37,7 @@ main(int argc, char **argv)
 
     char* ip = malloc(MAXLINE);
     char* name = malloc(MAXLINE);
+    char recon[MAXLINE*8] = "";
 
 
     getServerInfo(argin, ip, name);
@@ -81,7 +82,8 @@ main(int argc, char **argv)
 
     while ( (n = read(sockfd, recvline, MAXLINE)) > 0) {
         recvline[n] = 0;        /* null terminate */
-        printf("%s", recvline);
+        strcat(recon, recvline); //concatonate the lines together
+        //printf("%s", recvline);
         //out = stringToStruct(recvline);
         //printMsg(out);
         /*
@@ -90,11 +92,17 @@ main(int argc, char **argv)
             exit(1);
         }*/
     }
+
+    printf("%s", recon);
+
+
     if (n < 0) {
         printf("read error\n");
         exit(1);
     }
     free(out);
+    free(ip);
+    free(name);
     exit(0);
 }
 
