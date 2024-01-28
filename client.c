@@ -81,10 +81,13 @@ main(int argc, char **argv)
 
     while ( (n = read(sockfd, recvline, MAXLINE)) > 0) {
         recvline[n] = 0;        /* null terminate */
+        out = stringToStruct(recvline);
+        printMsg(out);
+        /*
         if (fputs(recvline, stdout) == EOF) {
             printf("fputs error\n");
             exit(1);
-        }
+        }*/
     }
     if (n < 0) {
         printf("read error\n");

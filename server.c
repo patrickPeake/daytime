@@ -46,7 +46,8 @@ main(int argc, char **argv)
             //printf("Received message from client: %s\n", buffin);
             msg = stringToStruct(buffin);
             //printMsg(msg);
-            strcpy(msg->payload, "Returned from server");
+            runWho(buff);
+            strcpy(msg->payload, buff);
             msg->msglen = strlen(msg->payload);
             structToString(msg, buffin, MAXLINE*4+1); 
             write(connfd, buffin, strlen(buffin));
