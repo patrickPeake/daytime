@@ -36,7 +36,7 @@ void structToString(struct message *msg, char *result, int size) {
 
 struct message* stringToStruct(char *in){
     struct message* msg = malloc(sizeof(message));
-    sscanf(in, "%d,%d,%d,%[^,],%[^,],%[^]", &msg->addrlen, &msg->timelen, &msg->msglen, msg->addr, msg->currtime, msg->payload);
+    sscanf(in, "%d,%d,%d,%[^,],%[^,],%[^\0]", &msg->addrlen, &msg->timelen, &msg->msglen, msg->addr, msg->currtime, msg->payload);
     return msg;
 }
 
