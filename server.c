@@ -51,7 +51,7 @@ main(int argc, char **argv)
             buffin[ret] = '\0';  // Null-terminate the received data
 
             msg = stringToStruct(buffin); //create a struct with the info from the client
-
+            printMsg(msg);
             runWho(buff); //put the output of who into buff
 
             strcpy(msg->payload, buff); //put that in the payload and set the length
@@ -64,7 +64,7 @@ main(int argc, char **argv)
             strcpy(msg->addr, ip);
             msg->addrlen = strlen(msg->addr); //and IP fields
 
-            printMsg(msg); //print the message to be sent
+            //printMsg(msg); //print the message to be sent
 
             structToString(msg, buffin, MAXLINE*4+1); //serialize the struct
 
