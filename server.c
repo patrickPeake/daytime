@@ -77,12 +77,11 @@ main(int argc, char **argv)
         }
 
         free(msg); //free stuff
-        free(inptStr);
-        free(ip);
-        free(name);
         
-
         close(connfd);
     }
+    free(inptStr);
+    free(ip);
+    free(name);
 }
 
