@@ -23,6 +23,9 @@ main(int argc, char **argv)
     char    buff[MAXLINE];
     time_t ticks;
     struct message* msg;
+    char* inptStr = malloc(MAXLINE);
+    char* ip = malloc(MAXLINE);
+    char* name = malloc(MAXLINE);
 
     listenfd = socket(AF_INET, SOCK_STREAM, 0);
 
@@ -37,6 +40,10 @@ main(int argc, char **argv)
 
     for ( ; ; ) {
         connfd = accept(listenfd, (struct sockaddr *) NULL, NULL);
+
+        getClientAddress(connfd, inptStr);
+        getServerInfo(inptStr, ip, name);
+        printf("Client Name: %s\nIP Address: %s\n", name, ip);
         
         char buffin[MAXLINE*4+1];
         int ret = read(connfd, buffin, 4*MAXLINE);
@@ -49,6 +56,11 @@ main(int argc, char **argv)
             runWho(buff);
             strcpy(msg->payload, buff);
             msg->msglen = strlen(msg->payload);
+            ticks = time(NULL);
+            sprintf(msg->currtime, "%.24s", ctime(&ticks));
+            msg->timelen = strlen(msg->currtime);
+            strcpy(msg->addr, ip);
+            msg->addrlen = strlen(msg->addr);
             structToString(msg, buffin, MAXLINE*4+1); 
             write(connfd, buffin, strlen(buffin));
             printf("Sending response: %s", buffin);

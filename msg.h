@@ -25,4 +25,6 @@ void runWho(char* toOut);
 
 void printPay(struct message* msg);
 
+void getClientAddress(int connfd, char* ipOut);
+
 #endif

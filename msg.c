@@ -114,4 +114,14 @@ void printPay(struct message* msg) { //print the payload
     printf("Who:\n%s\n", msg->payload);
 }
 
+void getClientAddress(int connfd, char* ipOut) {
+    struct sockaddr_in addr;
+    socklen_t addr_len = sizeof(addr);
+    if (getpeername(connfd, (struct sockaddr*)&addr, &addr_len) == 0) {
+        char ipstr[INET_ADDRSTRLEN];
+        inet_ntop(AF_INET, &(addr.sin_addr), ipstr, INET_ADDRSTRLEN);
+        strcpy(ipOut, ipstr);
+    }
+}
+
 #endif
