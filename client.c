@@ -24,7 +24,7 @@ main(int argc, char **argv)
     struct sockaddr_in servaddr;
     int isPipe = -1;
 
-    if (argc != 3 || argc != 5) { //check right number of args
+    if (argc != 3 && argc != 5) { //check right number of args
         printf("usage: client <IPaddress>, <port>\n");
         exit(1);
     }
