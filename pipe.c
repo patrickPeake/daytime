@@ -60,7 +60,67 @@ main(int argc, char **argv)
             //TODO: stick a client in the server loop here
 
 
+            int     sockfd, n;
+            char    recvline[MAXLINE + 1];
+            struct sockaddr_in servaddr;
 
+
+            if ( (sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+                printf("socket error\n");
+                exit(1);
+            }
+
+            char argin[MAXLINE]; 
+            strcpy(argin , msg->addr);
+            char* ip = malloc(MAXLINE);
+            char* name = malloc(MAXLINE);
+            char recon[MAXLINE*8] = "";
+
+
+            getServerInfo(argin, ip, name); //pass in either hostname or ip, get both back out
+
+            bzero(&servaddr, sizeof(servaddr));
+            servaddr.sin_family = AF_INET; 
+            servaddr.sin_port = htons(atoi(msg->payload));  /* daytime server */
+            if (inet_pton(AF_INET, ip, &servaddr.sin_addr) <= 0) {
+                printf("inet_pton error for %s\n", ip);
+                exit(1);
+            }
+            
+            char *message = malloc(MAXLINE*4); 
+            structToString(msg, message, MAXLINE*4+1); // format message to be sent to server
+
+            if (connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0) {
+                printf("connect error\n");
+                exit(1);
+            }
+
+            if (write(sockfd, message, strlen(message)) < 0) {
+                printf("write error\n");
+                exit(1); 
+            }
+
+
+            while ( (n = read(sockfd, recvline, MAXLINE)) > 0) {
+                recvline[n] = 0;        /* null terminate */
+                strcat(recon, recvline); //concatonate the lines together
+            }
+
+            free(msg); //free the old struct before assigning out to a new one
+            msg = stringToStruct(recon); //get new struct with correct fields from the server
+            //printf("Server Name: %s\nIP Address: %s\n\n", name, ip);
+            //printPay(out);
+
+
+            if (n < 0) {
+                printf("read error\n");
+                exit(1);
+            }
+
+            //free(msg); //free stuff
+            free(ip);
+            free(name);
+            free(message);
 
 
 
