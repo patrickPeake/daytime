@@ -87,6 +87,7 @@ void getServerInfo(char* input, char* ipOut, char* nameOut) { //takes in the ip 
 void runWho(char* toOut) {
     FILE *fp;
     char buffer[1024];
+    strcpy(toOut, "");
 
     // Open a pipe to the command
     fp = popen("who", "r");
@@ -96,9 +97,8 @@ void runWho(char* toOut) {
     }
 
     // Read the output of the command
-    while (fgets(buffer, sizeof(buffer), fp) != NULL) {
-        strcpy(toOut , buffer);
-        //printf("%s", buffer);
+    while (fgets(buffer, sizeof(buffer), fp) != NULL) { //while the file isnt empty
+        strncat(toOut, buffer, sizeof(toOut) - strlen(toOut) - 1); //concatonate the lines together
     }
 
     // Close the pipe

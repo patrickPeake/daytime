@@ -21,4 +21,6 @@ struct message* stringToStruct(char *in);
 
 void getServerInfo(char* input, char* ip, char* name);
 
+void runWho(char* toOut);
+
 #endif
