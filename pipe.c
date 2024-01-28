@@ -1,4 +1,4 @@
-#include <netinet/in.h> //When I tried to implement server addressing by name I was unable to get a real name from my server so I could not address it by name
+#include <netinet/in.h> //TODO: completely rewrite
 #include <arpa/inet.h>
 #include <sys/types.h>
 #include <sys/socket.h>

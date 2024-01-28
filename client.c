@@ -1,4 +1,4 @@
-#include <netinet/in.h> //When I tried to implement server addressing by name I was unable to get a real name from my server so I could not address it by name
+#include <netinet/in.h> 
 #include <arpa/inet.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -17,7 +17,6 @@
 int
 main(int argc, char **argv)
 {
-    //setbuf(stdout, NULL);//no buffering for stdout
     char argin[MAXLINE]; 
     strcpy(argin , argv[1]);
     int     sockfd, n;
@@ -40,7 +39,7 @@ main(int argc, char **argv)
     char recon[MAXLINE*8] = "";
 
 
-    getServerInfo(argin, ip, name);
+    getServerInfo(argin, ip, name); //pass in either hostname or ip, get both back out
 
     bzero(&servaddr, sizeof(servaddr));
     servaddr.sin_family = AF_INET; 
@@ -52,22 +51,17 @@ main(int argc, char **argv)
 
     time_t ticks; //construct struct
     struct message* out = init();
-    snprintf(out->addr, MAXLINE-1, "%s", ip);
+    snprintf(out->addr, MAXLINE-1, "%s", ip); //populate struct
     out->addrlen = strlen(out->addr);
     ticks = time(NULL); 
     snprintf(out->currtime, MAXLINE-1, "%.24s", ctime(&ticks));
     out->timelen = strlen(out->currtime);
     snprintf(out->payload, MAXLINE-1, "%s", "Test Output\n");
     out->msglen = strlen(out->payload);
-    //printMsg(out); //print struct for debug
     
-    // format message to be sent to server
     
-    char *message = malloc(MAXLINE*4);
-    structToString(out, message, MAXLINE*4+1); 
-    //printf("sending: %s\n", message);
-
- 
+    char *message = malloc(MAXLINE*4); 
+    structToString(out, message, MAXLINE*4+1); // format message to be sent to server
 
     if (connect(sockfd, (struct sockaddr *) &servaddr, sizeof(servaddr)) < 0) {
         printf("connect error\n");
@@ -83,19 +77,10 @@ main(int argc, char **argv)
     while ( (n = read(sockfd, recvline, MAXLINE)) > 0) {
         recvline[n] = 0;        /* null terminate */
         strcat(recon, recvline); //concatonate the lines together
-        //printf("%s", recvline);
-        //out = stringToStruct(recvline);
-        //printMsg(out);
-        /*
-        if (fputs(recvline, stdout) == EOF) {
-            printf("fputs error\n");
-            exit(1);
-        }*/
     }
 
-    //printf("%s", recon);
-    free(out);
-    out = stringToStruct(recon);
+    free(out); //free the old struct before assigning out to a new one
+    out = stringToStruct(recon); //get new struct with correct fields from the server
     printf("Server Name: %s\nIP Address: %s\n", name, ip);
     printPay(out);
 
@@ -104,9 +89,10 @@ main(int argc, char **argv)
         printf("read error\n");
         exit(1);
     }
-    free(out);
+    free(out); //free stuff
     free(ip);
     free(name);
+    free(message);
     exit(0);
 }
 

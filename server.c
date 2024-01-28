@@ -49,30 +49,37 @@ main(int argc, char **argv)
         int ret = read(connfd, buffin, 4*MAXLINE);
         if (ret > 0) {
             buffin[ret] = '\0';  // Null-terminate the received data
-            printf("\n\n");
-            //printf("Received message from client: %s\n", buffin);
-            msg = stringToStruct(buffin);
-            //printMsg(msg);
-            runWho(buff);
-            strcpy(msg->payload, buff);
+
+            msg = stringToStruct(buffin); //create a struct with the info from the client
+
+            runWho(buff); //put the output of who into buff
+
+            strcpy(msg->payload, buff); //put that in the payload and set the length
             msg->msglen = strlen(msg->payload);
+
             ticks = time(NULL);
-            sprintf(msg->currtime, "%.24s", ctime(&ticks));
+            sprintf(msg->currtime, "%.24s", ctime(&ticks)); //repopulate the time
             msg->timelen = strlen(msg->currtime);
+
             strcpy(msg->addr, ip);
-            msg->addrlen = strlen(msg->addr);
-            printMsg(msg);
-            structToString(msg, buffin, MAXLINE*4+1); 
-            write(connfd, buffin, strlen(buffin));
-            //printf("Sending response: %s", buffin);
-        } else {
+            msg->addrlen = strlen(msg->addr); //and IP fields
+
+            printMsg(msg); //print the message to be sent
+
+            structToString(msg, buffin, MAXLINE*4+1); //serialize the struct
+
+            write(connfd, buffin, strlen(buffin)); //send it out
+        } else { //souldnt ever really happen but will prevent client and server getting stuck if a bodyless message comes through
             ticks = time(NULL);
             snprintf(buff, sizeof(buff), "%.24s\r\n", ctime(&ticks));
             write(connfd, buff, strlen(buff));
             printf("Sending response: %s", buff);
         }
 
-        free(msg);
+        free(msg); //free stuff
+        free(inptStr);
+        free(ip);
+        free(name);
         
 
         close(connfd);

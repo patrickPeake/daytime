@@ -9,7 +9,7 @@
 
 #define MAXLINE    4096
 
-struct message* init() { //init an empty struct
+struct message* init() { //init an empty struct and return a pointer to it
     
     struct message* msg = malloc(sizeof(message));
     msg->addrlen = 0;
@@ -35,12 +35,12 @@ void structToString(struct message *msg, char *result, int size) { //serialize t
 }
 
 struct message* stringToStruct(char *in){ //parse the serialized string back into a struct delimiting on , except the last one whice delimits on ` because I cant figure out how 
-    struct message* msg = malloc(sizeof(message)); //to delimit on \0 or just put the entire rest of the string into the payload field
+    struct message* msg = malloc(sizeof(message)); //to delimit on \0 or just put the entire rest of the string into the payload field without gcc complaining
     sscanf(in, "%d,%d,%d,%[^,],%[^,],%[^`]", &msg->addrlen, &msg->timelen, &msg->msglen, msg->addr, msg->currtime, msg->payload); 
     return msg;
 }
 
-void getServerInfo(char* input, char* ipOut, char* nameOut) { //takes in the ip or hostname nad returns both
+void getServerInfo(char* input, char* ipOut, char* nameOut) { //takes in the ip or hostname and returns both in argument pointers
     struct addrinfo hints, *result, *rp;
     struct sockaddr_in *addr;
     char ip[MAXLINE];
@@ -67,17 +67,11 @@ void getServerInfo(char* input, char* ipOut, char* nameOut) { //takes in the ip 
             continue;
         }
 
-        if (getnameinfo(rp->ai_addr, rp->ai_addrlen, host, MAXLINE, NULL, 0, 0) == 0) {
-            //printf("Server Name: %s\n", host);
-        }
+        getnameinfo(rp->ai_addr, rp->ai_addrlen, host, MAXLINE, NULL, 0, 0);
 
-        // Print the result
+        // copy the results to the passed in strings
         strcpy(ipOut , ip);
         strcpy(nameOut , host);
-        //printf("\n\n");
-        //printf("Server Name: %s\n", host);
-        //printf("Server IP: %s\n", ip);
-        //printf("\n\n");
     }
 
     // Free the memory allocated by getaddrinfo
@@ -86,9 +80,8 @@ void getServerInfo(char* input, char* ipOut, char* nameOut) { //takes in the ip 
 
 void runWho(char* toOut) { //writes the output of the who command to the passed in string
     FILE *fp;
-    char buffer[1024];
-    //toOut = '\0';
-    strcpy(toOut, "");
+    char buffer[1024]; //make buffer
+    strcpy(toOut, ""); //make sure the arg pointer is to an empty string
 
     // Open a pipe to the command
     fp = popen("who", "r");
@@ -114,7 +107,7 @@ void printPay(struct message* msg) { //print the payload
     printf("Who:\n%s\n", msg->payload);
 }
 
-void getClientAddress(int connfd, char* ipOut) {
+void getClientAddress(int connfd, char* ipOut) { //returns the ip address from a connection
     struct sockaddr_in addr;
     socklen_t addr_len = sizeof(addr);
     if (getpeername(connfd, (struct sockaddr*)&addr, &addr_len) == 0) {

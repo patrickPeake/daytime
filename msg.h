@@ -1,5 +1,5 @@
-#ifndef MSG_H
-#define MSG_H
+#ifndef MSG_H //grew from holding methods to handle the message struct to general purpose utility file because i 
+#define MSG_H //couldnt be bothered to figture out how make works again after making it link this one properly
 
 #define MAXLINE     4096    /* max text line length */
 
