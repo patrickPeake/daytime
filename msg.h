@@ -23,4 +23,6 @@ void getServerInfo(char* input, char* ip, char* name);
 
 void runWho(char* toOut);
 
+void printPay(struct message* msg);
+
 #endif

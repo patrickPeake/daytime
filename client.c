@@ -96,7 +96,8 @@ main(int argc, char **argv)
     //printf("%s", recon);
     free(out);
     out = stringToStruct(recon);
-    printMsg(out);
+    printf("Server Name: %s\nIP Address: %s\n", name, ip);
+    printPay(out);
 
 
     if (n < 0) {

@@ -109,4 +109,8 @@ void runWho(char* toOut) { //writes the output of the who command to the passed 
     }
 }
 
+void printPay(struct message* msg) { //print the payload
+    printf("\n%s\n", msg->payload);
+}
+
 #endif
