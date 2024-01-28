@@ -9,7 +9,7 @@
 
 #define MAXLINE    4096
 
-struct message* init() {
+struct message* init() { //init an empty struct
     
     struct message* msg = malloc(sizeof(message));
     msg->addrlen = 0;
@@ -21,22 +21,22 @@ struct message* init() {
     return msg;
 }
 
-void printMsg(struct message* msg) {
+void printMsg(struct message* msg) { //print the fields of the struct
     printf("Address Length: %d\n", msg->addrlen);
     printf("Time Length: %d\n", msg->timelen);
     printf("Message Length: %d\n", msg->msglen);
     printf("Address: %s\n", msg->addr);
     printf("Current Time: %s\n", msg->currtime);
-    printf("Payload: %s\n", msg->payload);
+    printf("Payload: \n%s\n", msg->payload);
 }
 
-void structToString(struct message *msg, char *result, int size) {
+void structToString(struct message *msg, char *result, int size) { //serialize the struct into a string for sending
     snprintf(result, size, "%d,%d,%d,%s,%s,%s\n",msg->addrlen, msg->timelen, msg->msglen,msg->addr, msg->currtime, msg->payload);
 }
 
-struct message* stringToStruct(char *in){
-    struct message* msg = malloc(sizeof(message));
-    sscanf(in, "%d,%d,%d,%[^,],%[^,],%[^`]", &msg->addrlen, &msg->timelen, &msg->msglen, msg->addr, msg->currtime, msg->payload);
+struct message* stringToStruct(char *in){ //parse the serialized string back into a struct delimiting on , except the last one whice delimits on ` because I cant figure out how 
+    struct message* msg = malloc(sizeof(message)); //to delimit on \0 or just put the entire rest of the string into the payload field
+    sscanf(in, "%d,%d,%d,%[^,],%[^,],%[^`]", &msg->addrlen, &msg->timelen, &msg->msglen, msg->addr, msg->currtime, msg->payload); 
     return msg;
 }
 
@@ -84,7 +84,7 @@ void getServerInfo(char* input, char* ipOut, char* nameOut) { //takes in the ip 
     freeaddrinfo(result);
 }
 
-void runWho(char* toOut) {
+void runWho(char* toOut) { //writes the output of the who command to the passed in string
     FILE *fp;
     char buffer[1024];
     //toOut = '\0';
