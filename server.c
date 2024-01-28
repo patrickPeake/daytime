@@ -61,9 +61,10 @@ main(int argc, char **argv)
             msg->timelen = strlen(msg->currtime);
             strcpy(msg->addr, ip);
             msg->addrlen = strlen(msg->addr);
+            printMsg(msg);
             structToString(msg, buffin, MAXLINE*4+1); 
             write(connfd, buffin, strlen(buffin));
-            printf("Sending response: %s", buffin);
+            //printf("Sending response: %s", buffin);
         } else {
             ticks = time(NULL);
             snprintf(buff, sizeof(buff), "%.24s\r\n", ctime(&ticks));

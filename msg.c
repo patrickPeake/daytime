@@ -68,16 +68,16 @@ void getServerInfo(char* input, char* ipOut, char* nameOut) { //takes in the ip 
         }
 
         if (getnameinfo(rp->ai_addr, rp->ai_addrlen, host, MAXLINE, NULL, 0, 0) == 0) {
-            printf("Server Name: %s\n", host);
+            //printf("Server Name: %s\n", host);
         }
 
         // Print the result
         strcpy(ipOut , ip);
         strcpy(nameOut , host);
-        printf("\n\n");
-        printf("Server Name: %s\n", host);
-        printf("Server IP: %s\n", ip);
-        printf("\n\n");
+        //printf("\n\n");
+        //printf("Server Name: %s\n", host);
+        //printf("Server IP: %s\n", ip);
+        //printf("\n\n");
     }
 
     // Free the memory allocated by getaddrinfo
