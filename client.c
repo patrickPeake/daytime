@@ -164,6 +164,8 @@ main(int argc, char **argv)
         free(out); //free the old struct before assigning out to a new one
         out = stringToStruct(recon); //get new struct with correct fields from the server
         printf("Server Name: %s\nIP Address: %s\n\n", nameS, ipS);
+        printf("Tunnel Name: %s\nIP Address: %s\n\n", nameT, ipT);
+
         printPay(out);
 
 
