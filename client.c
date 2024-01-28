@@ -93,7 +93,10 @@ main(int argc, char **argv)
         }*/
     }
 
-    printf("%s", recon);
+    //printf("%s", recon);
+
+    out = stringToStruct(recon);
+    printMsg(out);
 
 
     if (n < 0) {
