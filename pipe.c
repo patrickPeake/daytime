@@ -43,7 +43,7 @@ main(int argc, char **argv)
 
         getClientAddress(connfd, inptStr);
         getServerInfo(inptStr, ip, name);
-        printf("Client Name: %s\nIP Address: %s\n", name, ip);
+        //printf("Client Name: %s\nIP Address: %s\n", name, ip);
         
         char buffin[MAXLINE*4+1];
         int ret = read(connfd, buffin, 4*MAXLINE);
