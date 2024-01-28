@@ -94,7 +94,7 @@ main(int argc, char **argv)
     }
 
     //printf("%s", recon);
-
+    free(out);
     out = stringToStruct(recon);
     printMsg(out);
 

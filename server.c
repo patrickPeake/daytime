@@ -59,7 +59,7 @@ main(int argc, char **argv)
             printf("Sending response: %s", buff);
         }
 
-
+        free(msg);
         
 
         close(connfd);
